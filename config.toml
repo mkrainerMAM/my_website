@@ -1,5 +1,5 @@
 # Site settings
-baseURL = "https://thirsty-hugle-47ec5c.netlify.app/"
+baseURL = "https://musing-mclean-272ad4.netlify.app/"
 languageCode = "en-us"
 title = "Portfolio website of Marie Krainer"
 theme = "forty"
