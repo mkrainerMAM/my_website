@@ -48,8 +48,8 @@ disqusShortname = ""
       url = "#"
 
     [[params.navigation.links]]
-      name = "Projects"
-      url = "projects"
+      name = "Blogs"
+      url = "blogs"
 
    # [[params.navigation.links]]
     #  name = "Generic Blog"
@@ -69,7 +69,7 @@ disqusShortname = ""
     # Button Style 1
     [[params.navigation.button1]]
       name = "Learn more about what I have done so far"
-      url = "projects"
+      url = "blogs"
 
     # Button Style 2
     #[[params.navigation.button2]]
@@ -95,7 +95,7 @@ disqusShortname = ""
       title = "Project One"
       subtitle = "Trump vs. Clinton"
       image = "pic01.jpg"
-      url = "projects/one"
+      url = "blogs/aliquam"
 
     [[params.tiles.showcase]]
       title = "Project Two"
