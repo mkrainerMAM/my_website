@@ -8,7 +8,7 @@
 	<meta name="description" content="Hello :)">
 	<meta name="author" content="Marie-Therese Krainer">
 	<meta name="generator" content="Hugo 0.74.3" />
-	<title>Magna &middot; Portfolio website of Marie Krainer</title>
+	<title>Brexit &middot; Portfolio website of Marie Krainer</title>
 	<!-- Stylesheets -->
 	
 	<link rel="stylesheet" href="/css/main.css"/>
@@ -58,7 +58,7 @@
         </ul>
         <ul class="actions vertical">
             
-                <li><a href="/blogs" class="button special fit">Learn more about what I have done so far</a></li>
+                <li><a href="/blogs" class="button special fit">R Projects</a></li>
             
             
         </ul>
@@ -71,12 +71,40 @@
                     <section id="one">
                         <div class="inner">
                             <header class="major">
-                                <h1>Magna</h1>
+                                <h1>Brexit</h1>
                             </header>
                             
-                                <span class="image main"><img src="/img/blogs/pic09.jpg" alt="" /></span>
+                                <span class="image main"><img src="/img/blogs/brexit.png" alt="" /></span>
                             
-                            
+                            <p>We will first have a look at the Brexit dataframe.</p>
+<pre><code class="language-{r" data-lang="{r">knitr::include_graphics(here::here(&quot;images&quot;, &quot;brexit.png&quot;), error = FALSE)
+</code></pre><p>We will now replicate the graph from above.</p>
+<pre><code class="language-{r}" data-lang="{r}">#importing dataframe brexit
+library(skimr)
+library(ggplot2)
+brexit_results &lt;- vroom::vroom(here::here(&quot;data&quot;, &quot;brexit_results.csv&quot;))
+skim(brexit_results)
+summary(brexit_results)
+
+
+
+#adding column called party to link all parties 
+brexit_long &lt;- gather(brexit_results, party, percentage, con_2015:ukip_2015, factor_key=TRUE)
+
+#building our graph with ggplot
+ggplot(brexit_long, aes(x = percentage ,y=leave_share, color = party))+
+  geom_point(size = 2, alpha=0.5) +
+  geom_smooth(method = lm) +
+  labs(title = &quot;How political affiliation translated to Brexit Voting&quot;, 
+       x = &quot;Party % in the UK 2015 general election&quot;, 
+       y = &quot;Leave % in the 2016 Brexit referendum&quot;) +
+  scale_x_discrete(expand=c(0.05,0.05),limits=c(0 ,20, 40, 60, 80))+
+  scale_color_manual(values = c(&quot;#0087DC&quot;,&quot;#DC241f&quot;,&quot;#FDBB30&quot;,&quot;#EFE600&quot;), name = &quot;&quot;, labels = c(&quot;Conservative&quot;, &quot;Labour&quot;, &quot;Lib Dems&quot;, &quot;UKIP&quot;) ) +
+  theme_bw() +
+  theme(legend.position = &quot;bottom&quot;, legend.direction = &quot;horizontal&quot;, plot.title =element_text(face=&quot;bold&quot;)) 
+  
+
+</code></pre>
                         </div>
                     </section>
             <!-- Disqus Inject -->

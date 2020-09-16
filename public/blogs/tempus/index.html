@@ -58,7 +58,7 @@
         </ul>
         <ul class="actions vertical">
             
-                <li><a href="/blogs" class="button special fit">Learn more about what I have done so far</a></li>
+                <li><a href="/blogs" class="button special fit">R Projects</a></li>
             
             
         </ul>
@@ -74,9 +74,104 @@
                                 <h1>Tempus</h1>
                             </header>
                             
-                                <span class="image main"><img src="/img/blogs/pic08.jpg" alt="" /></span>
+                                <span class="image main"><img src="/img/blogs/covid_death_rate_comorbidities.png" alt="" /></span>
                             
-                            
+                            <p>CA_contributors_2016 &lt;- vroom::vroom(here::here(&ldquo;data&rdquo;,&ldquo;CA_contributors_2016.csv&rdquo;))
+zipcodes_2016 &lt;- vroom::vroom(here::here(&ldquo;data&rdquo;,&ldquo;zip_code_database.csv&rdquo;))</p>
+<pre><code>
+As we have seen that the zipcodes in the zipcodes file are stored as characters. We first had to transform them into doubles to match the format of the zipcodes in the CA_contributors. In order to match zipcodes to the cities and so combine both datasets, we used left_join and called the final dataset 'mix'.
+
+We now filtered for Trump and Clinton respectively and made a list of the top 10 cities that donated the most money.
+
+```{r, Summary_Clinton}
+library(scales)
+library(patchwork)
+
+#changing zip codes to double and joining with CA_contributors_2016 dataset
+zipcodes_2016 &lt;- zipcodes_2016 %&gt;%
+    mutate(zip=as.double(zip))
+mix &lt;- left_join( CA_contributors_2016, zipcodes_2016, by=&quot;zip&quot;)
+
+#Summarising contribution amounts for Hillary Clinton
+CA_Clinton &lt;- mix %&gt;%
+      filter(cand_nm==&quot;Clinton, Hillary Rodham&quot;)%&gt;%
+      group_by(primary_city) %&gt;%
+      summarise(totalAmount=sum(contb_receipt_amt)) %&gt;%
+      arrange(desc(totalAmount))%&gt;%
+      mutate(primary_city = fct_reorder(primary_city, totalAmount)) %&gt;%
+      head(10)
+      
+  CA_Clinton
+</code></pre><pre><code class="language-{r," data-lang="{r,">
+#Summarising contribution amounts for Hillary Clinton
+  CA_Trump &lt;- mix %&gt;%
+      filter(cand_nm==&quot;Trump, Donald J.&quot;)%&gt;%
+      group_by(primary_city) %&gt;%
+      summarise(totalAmount=sum(contb_receipt_amt)) %&gt;%
+      arrange(desc(totalAmount))%&gt;%
+      mutate(primary_city = fct_reorder(primary_city, totalAmount)) %&gt;%
+      head(10)
+      
+  CA_Trump
+</code></pre><p>We now plotted both graphs of Trump and Clinton through the patchwork library next to each other. To replicate the design, we used the theme_bw.</p>
+<pre><code class="language-{r," data-lang="{r,">
+#Creating a bar plot for Clinton in descending order of contribution raised 
+p1 &lt;- ggplot(CA_Clinton, aes(x=totalAmount, y=primary_city)) + 
+  geom_col(fill=&quot;#3182bd&quot;, size=0.30)  + 
+  theme_bw() +
+  facet_grid(~&quot;Clinton, Hillary Rodham&quot;)+
+  theme(axis.title.x = element_blank(), 
+        axis.title.y = element_blank()) + 
+  scale_x_continuous(labels=dollar)
+
+#Creating a bar plot for Trump in descending order of contribution raised  
+p2 &lt;- ggplot(CA_Trump, aes(x=totalAmount, y=primary_city)) + 
+  geom_col(fill=&quot;#d73027&quot;, size=0.30) + 
+  theme_bw() +
+  facet_grid(~&quot;Trump, Donald J.&quot;)+
+  theme (axis.title.x = element_blank(), 
+        axis.title.y = element_blank()) + 
+  scale_x_continuous(labels=dollar)
+
+#Using the patchwork library to display the plots side by side
+wrap_plots(p1,p2) + labs(x=&quot;Amount raised&quot;) + theme(axis.title.x = element_text(face=&quot;bold&quot;, hjust=-0.41)) + plot_annotation(&quot;Where did candidates raise most money?&quot;) 
+
+</code></pre><p>As we want to find the top 10 candidates who received the most money, we created the dataset cand_top. As a second step, we wanted to find the top 10 cities per candidate who received the most money. In order to do so we had to filter for these top 10 candidates in the mix dataset and save this result in the dataset top10. This dataset now had to be modified to only select the top 10 cities per candidate which we then plotted through ggplot.</p>
+<pre><code class="language-{r," data-lang="{r,">
+library(tidytext)
+
+#creating a tibble containing the top 10 candidates by total contribution amount 
+cand_top &lt;- mix %&gt;%
+  group_by(cand_nm) %&gt;%
+  summarise(total_contributions = sum(contb_receipt_amt)) %&gt;%
+  arrange(desc(total_contributions))  %&gt;%
+  head(10)
+
+
+#grouping by primary city and candidate and then reordering within categories
+top10 &lt;-mix %&gt;%
+    filter(cand_nm %in% cand_top$cand_nm)%&gt;%
+    group_by(primary_city, cand_nm) %&gt;%
+    summarise(totalAmount =sum(contb_receipt_amt)) %&gt;% 
+    group_by(cand_nm) %&gt;%
+    top_n(10) %&gt;% 
+    ungroup %&gt;% 
+    #using reorder_within to reorder each category by total amount 
+    mutate(cand_nm = as.factor(cand_nm),
+           primary_city = reorder_within(primary_city, totalAmount, cand_nm)) 
+
+
+    ggplot(top10, aes(primary_city, totalAmount)) +
+    geom_col(show.legend = FALSE) +
+    facet_wrap(~cand_nm, scales = &quot;free&quot;) +
+    coord_flip() +
+    scale_x_reordered() +
+    theme_bw()+
+    scale_y_continuous(expand = c(0,0), labels=dollar) + #adding currency unit - dollars
+    theme (axis.title.x = element_blank(), 
+        axis.title.y = element_blank())  
+
+</code></pre>
                         </div>
                     </section>
             <!-- Disqus Inject -->

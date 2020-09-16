@@ -1,5 +1,5 @@
 # Site settings
-baseURL = "https://gifted-goodall-356eb4.netlify.app/"
+baseURL = "https://mariekrainer.netlify.app/"
 languageCode = "en-us"
 title = "Portfolio website of Marie Krainer"
 theme = "forty"
@@ -27,8 +27,7 @@ disqusShortname = ""
   custom_js  = []
   favicon    = "favicon.ico"
 
-  # Just a custom image variable, please define it in .md files for content.
-  image = ""
+
 
   # 404 error customization
   [params.error404]
@@ -68,7 +67,7 @@ disqusShortname = ""
 
     # Button Style 1
     [[params.navigation.button1]]
-      name = "Learn more about what I have done so far"
+      name = "R Projects"
       url = "blogs"
 
     # Button Style 2
@@ -92,16 +91,28 @@ disqusShortname = ""
     # Display your showcases here.
     
     [[params.tiles.showcase]]
-      title = "Project One"
-      subtitle = "Trump vs. Clinton"
-      image = "pic01.jpg"
+      title = "Trump"
+      subtitle = "Trump"
+      image = "trump_approval_margin.jpg"
       url = "blogs/aliquam"
 
     [[params.tiles.showcase]]
-      title = "Project Two"
-      subtitle = "Challenge 2"
-      image = "pic02.jpg"
-      url = "projects/two"
+      title = "Brexit"
+      subtitle = "Percentage of people voting to leave the EU by party"
+      image = "brexit.png"
+      url = "blogs/magna"
+      
+       [[params.tiles.showcase]]
+      title = "Covid"
+      subtitle = "death rate"
+      image = "covid_death_rate_icu.jpg"
+      url = "blogs/tempus"
+
+    [[params.tiles.showcase]]
+      title = "Trump vs. Clinton"
+      subtitle = "Top 10 Californian cities that donated money"
+      image = "challege2.png"
+      url = "blogs/ipsum"
 
 
   [params.blog]
@@ -112,10 +123,13 @@ disqusShortname = ""
     enable = true
     title = "About Myself"
     subtitle = """Who I am. 
-    My name is Marie and I am currently finishing my master´s degree at LBS. Before that I completed
-    my undergraduate at the Technical University Munich."""
-    buttonText = "Find out more"
-    url = "projects"
+    My name is Marie and I am currently finishing my master´s degree in Analytics and Management
+    at LBS. Before moving to London, I completed
+    my undergraduate in information systems at the Technical University Munich. 
+    Prior LBS I learned 
+    programming languages such as Java, JavaScript, html, SQL and CSS. This portfolio, however, is my
+    first attempt of R programming. Enjoy :)"""
+    url = "blogs"
 
 
   # Contact section

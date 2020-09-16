@@ -8,7 +8,7 @@
 	<meta name="description" content="Hello :)">
 	<meta name="author" content="Marie-Therese Krainer">
 	<meta name="generator" content="Hugo 0.74.3" />
-	<title>Aliquam &middot; Portfolio website of Marie Krainer</title>
+	<title>Trump vs. Clinton &middot; Portfolio website of Marie Krainer</title>
 	<!-- Stylesheets -->
 	
 	<link rel="stylesheet" href="/css/main.css"/>
@@ -58,7 +58,7 @@
         </ul>
         <ul class="actions vertical">
             
-                <li><a href="/blogs" class="button special fit">Learn more about what I have done so far</a></li>
+                <li><a href="/blogs" class="button special fit">R Projects</a></li>
             
             
         </ul>
@@ -71,12 +71,82 @@
                     <section id="one">
                         <div class="inner">
                             <header class="major">
-                                <h1>Aliquam</h1>
+                                <h1>Trump vs. Clinton</h1>
                             </header>
                             
-                                <span class="image main"><img src="/img/blogs/pic07.jpg" alt="" /></span>
+                                <span class="image main"><img src="/img/blogs/trump_approval_margin.png" alt="" /></span>
                             
-                            
+                            <p>Importing and cleaning the data:</p>
+<pre><code class="language-{r," data-lang="{r,"># Import approval polls data
+approval_polllist &lt;- read_csv(here::here('data','approval_polllist.csv'))
+
+# or directly off fivethirtyeight website
+# approval_polllist &lt;- read_csv('https://projects.fivethirtyeight.com/trump-approval-data/approval_polllist.csv') 
+
+glimpse(approval_polllist)
+
+# Use `lubridate` to fix dates, as they are given as characters.
+
+approval_polllist_clean &lt;- approval_polllist %&gt;%
+    filter(subgroup==&quot;Voters&quot;)%&gt;%
+    mutate(modeldate = mdy(modeldate), 
+           startdate = mdy(startdate), 
+           enddate=mdy(enddate),
+           createddate=mdy(createddate), 
+           timestamp=parse_date_time(timestamp, orders=&quot;HMSdmy&quot;)
+           )
+
+glimpse(approval_polllist_clean)
+
+</code></pre><p>Estimating net approval for Donald Trump:</p>
+<pre><code class="language-{r," data-lang="{r,">
+library(aplot)
+library(scales)
+#this library is used to adapt the graph to the requirements given on the picture
+library(ggThemeAssist)  
+
+
+plot_trump &lt;- approval_polllist_clean %&gt;%
+  mutate (net_approval_rate = (adjusted_approve - adjusted_disapprove), 
+          end_week = week(enddate), year =year(enddate)) %&gt;% 
+  group_by(year, end_week) %&gt;% 
+  summarize(mean_net = mean(net_approval_rate)) %&gt;% 
+  ungroup()
+
+#dataset for calculating CI for each week per months
+CI_plot &lt;- approval_polllist_clean %&gt;%
+  mutate (net_approval_rate = (adjusted_approve - adjusted_disapprove), 
+          end_week = week(enddate), year =year(enddate)) %&gt;% 
+  group_by(year, end_week) %&gt;% 
+  summarize(mean_net = mean(net_approval_rate), 
+            std_trump = sd(net_approval_rate), 
+            stan_error_trump = std_trump/sqrt(count(end_week)), 
+            t_critical = qt(0.975,  count(end_week) -1), 
+            lower_CI = mean_net - t_critical*stan_error_trump, 
+            upper_CI = mean_net + t_critical*stan_error_trump)
+
+
+#this graph plots the average points and adds two lines for the ci error bars; each year is depicted in a new graph
+ggplot(CI_plot, aes(x=end_week, y=mean_net, color=as.factor(year))) +
+  facet_wrap(~year) +
+  geom_linerange(aes(ymax = upper_CI , ymin =  lower_CI), size=0) +
+  geom_point(size=0.6) +
+  geom_hline(yintercept=0, linetype=&quot;solid&quot;, color = &quot;orange&quot;) + 
+  geom_line(aes(y = upper_CI))+
+  geom_line(aes(y = lower_CI))+
+  geom_ribbon(aes(ymin=lower_CI,ymax=upper_CI), alpha=0.3) +
+  geom_line() +
+  labs(title =&quot;Estimating Net Approval (approve-disapprove) for Donald Trump&quot;, 
+       subtitle =&quot;Weekly average of all polls&quot;, x=&quot;Week of year&quot;) +
+  scale_y_continuous(labels = scales::number_format(digits = 1)) + 
+  theme(panel.grid.major = element_line(colour = &quot;whitesmoke&quot;), 
+        panel.background = element_rect(fill = &quot;whitesmoke&quot;), 
+        legend.position = &quot;none&quot;) +labs(y = &quot;Average Net Approval (%) &quot;) +
+  scale_x_continuous(breaks= c(0,13, 26, 39, 52)) +
+  scale_y_continuous(breaks=c(-20,0, -17.7,-15.0,-12.5,-10.0,-7.5,-5.0,-2.5,0.0,2.5,5.0,7.5)) +
+  scale_color_manual(values=c(&quot;#FF736C&quot;, &quot;#7DAE00&quot;, &quot;#00BBBD&quot;, &quot;#C47EFF&quot;))
+
+ </code></pre>
                         </div>
                     </section>
             <!-- Disqus Inject -->
