@@ -3,87 +3,88 @@ categories:
 - ""
 - ""
 date: "2017-10-31T21:28:43-05:00"
-description: ""
+description: This project illustrates the top 10 cities in California that donated money to Trump and Clinton.
 draft: false
 image: challenge2.png
 keywords: ""
 slug: ipsum
-title: Ipsum
+title: Trump vs. Clinton
 ---
 
-Covid death rate % by age group, sex, and whether the patient had co-morbidities or not:
-
-```{r, covid_death_rate2, fig6, fig.width = 12, fig.height=7}
-#removing missing and unknown values
-val_to_remove=c("Missing", "Unknown", "Other", NA)
-
-death_rate_medcond <- covid_data %>% 
-  select(medcond_yn, death_yn, sex, age_group) %>% 
-  #removing missing and unknown values
-  filter(!(death_yn %in% val_to_remove) ,
-         !(medcond_yn %in% val_to_remove), 
-         !(sex %in% val_to_remove),
-         !(age_group %in% val_to_remove),
-  ) %>%
-  #assigning more meaningful names to variable medcond_yn
-  mutate(death_bool = ifelse(death_yn=="Yes", 1, 0), 
-         co_mor= ifelse(medcond_yn=="Yes", "With comorbidities", "Without comorbidities")) %>% 
-  group_by(age_group, sex, co_mor) %>% 
-  summarise(death_r = prop(death_bool))
-
-ggplot(death_rate_medcond, aes(x=death_r, y=age_group)) +
-  geom_col(fill="#1b5596", alpha=0.6) +
-  #faceting by sex and presence of co-morbidities
-  facet_grid(rows= vars(co_mor), cols= vars(sex))+
-  scale_x_continuous(labels = scales::percent)+
-  theme_bw()+
-  geom_text(aes(label=round(death_r*100, 2)), position=position_dodge(width=0.8), hjust=-0.05, size=3)+
-  labs (
-    title = "Covid death % by age group, sex and presence of co-morbidities",
-    caption="Source: CDC"
-  )+
-  theme(
-    axis.title.x=element_blank(),
-    axis.title.y=element_blank()
-  )
+First I saved two different dataframes CA_contributor and zipcodes in new varibales and merged them via left_join as one dataframe as CA_contributors only listed the zipcodes while the other one assigned the zipcodes to the cities. But first I had to transform the zipcodes into doubles to match the format of the zipcodes in the CA_contributor.
 
 
+```{r, Summary_Clinton}
+
+
+CA_contributors_2016 <- vroom::vroom(here::here("data","CA_contributors_2016.csv"))
+zipcodes_2016 <- vroom::vroom(here::here("data","zip_code_database.csv"))
+
+library(scales)
+library(patchwork)
+
+#changing zip codes to double and joining with CA_contributors_2016 dataset
+zipcodes_2016 <- zipcodes_2016 %>%
+    mutate(zip=as.double(zip))
+mix <- left_join( CA_contributors_2016, zipcodes_2016, by="zip")
+``` 
+
+I now filtered for Trump and Clinton respectively and made a list of the top 10 cities that donated the most money.
+ 
+```{r, Summary_Trump}  
+
+#Summarising contribution amounts for Hillary Clinton
+CA_Clinton <- mix %>%
+      filter(cand_nm=="Clinton, Hillary Rodham")%>%
+      group_by(primary_city) %>%
+      summarise(totalAmount=sum(contb_receipt_amt)) %>%
+      arrange(desc(totalAmount))%>%
+      mutate(primary_city = fct_reorder(primary_city, totalAmount)) %>%
+      head(10)
+      
+  CA_Clinton
+``` 
+ 
+```{r, Summary_Trump}  
+
+#Summarising contribution amounts for Hillary Clinton
+  CA_Trump <- mix %>%
+      filter(cand_nm=="Trump, Donald J.")%>%
+      group_by(primary_city) %>%
+      summarise(totalAmount=sum(contb_receipt_amt)) %>%
+      arrange(desc(totalAmount))%>%
+      mutate(primary_city = fct_reorder(primary_city, totalAmount)) %>%
+      head(10)
+      
+  CA_Trump
+```  
+I now plotted both graphs of Trump and Clinton through the patchwork library next to each other.
+
+```{r, fig3, fig.height = 5, fig.width = 10}
+
+#Creating a bar plot for Clinton in descending order of contribution raised 
+p1 <- ggplot(CA_Clinton, aes(x=totalAmount, y=primary_city)) + 
+  geom_col(fill="#3182bd", size=0.30)  + 
+  theme_bw() +
+  facet_grid(~"Clinton, Hillary Rodham")+
+  theme(axis.title.x = element_blank(), 
+        axis.title.y = element_blank()) + 
+  scale_x_continuous(labels=dollar)
+
+#Creating a bar plot for Trump in descending order of contribution raised  
+p2 <- ggplot(CA_Trump, aes(x=totalAmount, y=primary_city)) + 
+  geom_col(fill="#d73027", size=0.30) + 
+  theme_bw() +
+  facet_grid(~"Trump, Donald J.")+
+  theme (axis.title.x = element_blank(), 
+        axis.title.y = element_blank()) + 
+  scale_x_continuous(labels=dollar)
+
+#Using the patchwork library to display the plots side by side
+wrap_plots(p1,p2) + labs(x="Amount raised") + theme(axis.title.x = element_text(face="bold", hjust=-0.41)) + plot_annotation("Where did candidates raise most money?") 
 
 ```
 
-Covid death rate % by age group, sex, and whether the patient was admited to Intensive Care Unit (ICU) or not:
-```{r, covid_death_rate2, fig7, fig.width = 12, fig.height=7}
 
-val_to_remove=c("Missing", "Unknown", "Other", NA)
-
-death_rate_icu <- covid_data %>% 
-  select(icu_yn, death_yn, sex, age_group) %>% 
-  #removing missing and unknown values
-  filter(!(death_yn %in% val_to_remove) ,
-         !(icu_yn %in% val_to_remove), 
-         !(sex %in% val_to_remove),
-         !(age_group %in% val_to_remove),
-  ) %>%
-  #assigning more meaningful names to variable icu_yn
-  mutate(death_bool = ifelse(death_yn=="Yes", 1, 0), 
-         icu= ifelse(icu_yn=="Yes", "Admitted to ICU", "No ICU")) %>% 
-  group_by(age_group, sex, icu) %>% 
-  summarise(death_r = prop(death_bool))
-
-ggplot(death_rate_icu, aes(x=death_r, y=age_group)) +
-  geom_col(fill="#f2695c", alpha=0.7) +
-  #faceting by sex and whether patient was admitted to the ICU
-  facet_grid(rows= vars(icu), cols= vars(sex))+
-  scale_x_continuous(labels = scales::percent)+
-  theme_bw()+
-  geom_text(aes(label=round(death_r*100, 2)), position=position_dodge(width=0.8), hjust=-0.05, size=2)+
-  labs (
-    title = "Covid death % by age group, sex and whether patient was admitted to ICU",
-    caption="Source: CDC"
-  )+
-  theme(
-    axis.title.x=element_blank(),
-    axis.title.y=element_blank()
-  )
 
 

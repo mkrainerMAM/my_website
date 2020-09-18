@@ -3,7 +3,7 @@ categories:
 - ""
 - ""
 date: "2017-10-31T22:26:09-05:00"
-description: Lorem Etiam Nullam
+description: This porject shows the percentage of people per party who voted pro Brexit
 draft: false
 keywords: ""
 slug: magna
@@ -11,30 +11,29 @@ title: Brexit
 image: brexit.png
 ---
 
+During this coding project the aim was to compare the four major UK parties Conservative,
+Labour, UKIP and Liberal Democrats accorind to the percetage that voted for leaving the EU. To visualise the results, I decided to use a scatterplot.
 
-
-We will first have a look at the Brexit dataframe.
-
-
-```{r brexit_challenge, echo=FALSE, out.width="100%"}
-knitr::include_graphics(here::here("images", "brexit.png"), error = FALSE)
-```
-We will now replicate the graph from above.
+First I wanted to have a look at the dataset provided and therefore used the skim and summary function of R.
 
 ```{r}
-#importing dataframe brexit
-library(skimr)
-library(ggplot2)
+
 brexit_results <- vroom::vroom(here::here("data", "brexit_results.csv"))
 skim(brexit_results)
 summary(brexit_results)
 
+```
+As the dataframe had four different columns for each party, I decided to create a new dataframe that has a column called party and includes all four parties.
 
-
+```{r}
 #adding column called party to link all parties 
 brexit_long <- gather(brexit_results, party, percentage, con_2015:ukip_2015, factor_key=TRUE)
+```
 
-#building our graph with ggplot
+In this part I plotted the actual graph using the ggplot2 package of R. I used the official color of the parties and customized the graph.
+
+```{r}
+
 ggplot(brexit_long, aes(x = percentage ,y=leave_share, color = party))+
   geom_point(size = 2, alpha=0.5) +
   geom_smooth(method = lm) +

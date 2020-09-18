@@ -3,17 +3,18 @@ categories:
 - ""
 - ""
 date: "2017-10-31T22:42:51-05:00"
-description: Nullam et orci eu lorem consequat tincidunt vivamus et sagittis magna sed nunc rhoncus condimentum sem. In efficitur ligula tate urna. Maecenas massa sed magna lacinia magna pellentesque lorem ipsum dolor. Nullam et orci eu lorem consequat tincidunt. Vivamus et sagittis tempus.
+description: This project illustrates the change of Trump´s net approval rate since 2017 
 
 draft: false
 
 keywords: ""
 slug: aliquam
-title: Trump vs. Clinton
+title: Trump 
 image: trump_approval_margin.png
 ---
 
-Importing and cleaning the data:
+This section firstly imports the data and after using the glimpse function that provides a 
+snapshot of the data, I transformed character values into dates.
 
 ```{r, cache=TRUE}
 # Import approval polls data
@@ -38,13 +39,13 @@ approval_polllist_clean <- approval_polllist %>%
 glimpse(approval_polllist_clean)
 
 ```
-Estimating net approval for Donald Trump:
+I am using ggplot to create the graphs in this part of the code. I caculate the net average
+approval rate and further plot the error bars based on the confidence intervals of each data point. Lastly, I facet-wrap the graphs to create an individual plot for each year.
 
 ```{r, plot_Weekly_Trump_Approval_Ratings, fig1, fig.width = 12, fig.height=5}
 
 library(aplot)
 library(scales)
-#this library is used to adapt the graph to the requirements given on the picture
 library(ggThemeAssist)  
 
 
