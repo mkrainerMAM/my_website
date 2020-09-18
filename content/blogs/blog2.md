@@ -3,7 +3,7 @@ categories:
 - ""
 - ""
 date: "2017-10-31T22:26:09-05:00"
-description: This porject shows the percentage of people per party who voted pro Brexit
+description: This project shows the percentage of people per party who voted pro Brexit
 draft: false
 keywords: ""
 slug: magna
