@@ -8,7 +8,7 @@
 	<meta name="description" content="Hello :)">
 	<meta name="author" content="Marie-Therese Krainer">
 	<meta name="generator" content="Hugo 0.74.3" />
-	<title>Trump vs. Clinton &middot; Portfolio website of Marie Krainer</title>
+	<title>Trump &middot; Portfolio website of Marie Krainer</title>
 	<!-- Stylesheets -->
 	
 	<link rel="stylesheet" href="/css/main.css"/>
@@ -71,12 +71,13 @@
                     <section id="one">
                         <div class="inner">
                             <header class="major">
-                                <h1>Trump vs. Clinton</h1>
+                                <h1>Trump</h1>
                             </header>
                             
                                 <span class="image main"><img src="/img/blogs/trump_approval_margin.png" alt="" /></span>
                             
-                            <p>Importing and cleaning the data:</p>
+                            <p>This section firstly imports the data and after using the glimpse function that provides a
+snapshot of the data, I transformed character values into dates.</p>
 <pre><code class="language-{r," data-lang="{r,"># Import approval polls data
 approval_polllist &lt;- read_csv(here::here('data','approval_polllist.csv'))
 
@@ -98,11 +99,11 @@ approval_polllist_clean &lt;- approval_polllist %&gt;%
 
 glimpse(approval_polllist_clean)
 
-</code></pre><p>Estimating net approval for Donald Trump:</p>
+</code></pre><p>I am using ggplot to create the graphs in this part of the code. I caculate the net average
+approval rate and further plot the error bars based on the confidence intervals of each data point. Lastly, I facet-wrap the graphs to create an individual plot for each year.</p>
 <pre><code class="language-{r," data-lang="{r,">
 library(aplot)
 library(scales)
-#this library is used to adapt the graph to the requirements given on the picture
 library(ggThemeAssist)  
 
 

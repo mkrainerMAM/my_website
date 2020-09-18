@@ -76,22 +76,19 @@
                             
                                 <span class="image main"><img src="/img/blogs/brexit.png" alt="" /></span>
                             
-                            <p>We will first have a look at the Brexit dataframe.</p>
-<pre><code class="language-{r" data-lang="{r">knitr::include_graphics(here::here(&quot;images&quot;, &quot;brexit.png&quot;), error = FALSE)
-</code></pre><p>We will now replicate the graph from above.</p>
-<pre><code class="language-{r}" data-lang="{r}">#importing dataframe brexit
-library(skimr)
-library(ggplot2)
+                            <p>During this coding project the aim was to compare the four major UK parties Conservative,
+Labour, UKIP and Liberal Democrats accorind to the percetage that voted for leaving the EU. To visualise the results, I decided to use a scatterplot.</p>
+<p>First I wanted to have a look at the dataset provided and therefore used the skim and summary function of R.</p>
+<pre><code class="language-{r}" data-lang="{r}">
 brexit_results &lt;- vroom::vroom(here::here(&quot;data&quot;, &quot;brexit_results.csv&quot;))
 skim(brexit_results)
 summary(brexit_results)
 
-
-
-#adding column called party to link all parties 
+</code></pre><p>As the dataframe had four different columns for each party, I decided to create a new dataframe that has a column called party and includes all four parties.</p>
+<pre><code class="language-{r}" data-lang="{r}">#adding column called party to link all parties 
 brexit_long &lt;- gather(brexit_results, party, percentage, con_2015:ukip_2015, factor_key=TRUE)
-
-#building our graph with ggplot
+</code></pre><p>In this part I plotted the actual graph using the ggplot2 package of R. I used the official color of the parties and customized the graph.</p>
+<pre><code class="language-{r}" data-lang="{r}">
 ggplot(brexit_long, aes(x = percentage ,y=leave_share, color = party))+
   geom_point(size = 2, alpha=0.5) +
   geom_smooth(method = lm) +
