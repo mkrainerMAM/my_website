@@ -92,7 +92,7 @@ disqusShortname = ""
     
     [[params.tiles.showcase]]
       title = "Trump"
-      subtitle = "Trump"
+      subtitle = "Trump´s net approval rate"
       image = "trump_approval_margin.jpg"
       url = "blogs/aliquam"
 
