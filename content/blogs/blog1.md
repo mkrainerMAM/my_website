@@ -10,7 +10,7 @@ keywords: ""
 slug: ipsum
 title: Trump vs. Clinton
 ---
-
+The goal of this project was to illustarte the top 10 cities in California that donated most money to Trump and Clinton.
 First I saved two different dataframes CA_contributor and zipcodes in new varibales and merged them via left_join as one dataframe as CA_contributors only listed the zipcodes while the other one assigned the zipcodes to the cities. But first I had to transform the zipcodes into doubles to match the format of the zipcodes in the CA_contributor.
 
 
@@ -85,6 +85,7 @@ wrap_plots(p1,p2) + labs(x="Amount raised") + theme(axis.title.x = element_text(
 
 ```
 
+The two graphs show clearly that Clinton overall received more money from California indicating a majority of democrats. Moreover, Trump and Clinton recieved most money from Los Angeles and San Diego and San Franscisco and Los Angeles respectively, which proves that large/highly populated citites donate more money than smaller ones.  
 
 
 

@@ -11,7 +11,7 @@ keywords: ""
 slug: tempus
 title: Covid
 ---
-
+The goal of this project was to illustrate the Covid-19 death rates for different age groups and both genders. 
 After having imported and looked at the date, I discovered many different forms of unknowns and decided to clear the dataframe by removing those. 
 
 ```{r, covid_death_rate2, fig7, fig.width = 12, fig.height=7}
@@ -54,3 +54,4 @@ ggplot(death_rate_medcond, aes(x=death_r, y=age_group)) +
   )
   
   ```
+The fist implication of this graph is a higher death rate for male tha for female people, no matter which age group. Secondly, the older the people, the higher their chance of dying. Lastly, peopel with any kind of comorbidity were more likely to die. The two last points can both be explained by weaker immune systems. 

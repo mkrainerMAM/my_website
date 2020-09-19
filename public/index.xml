@@ -17,8 +17,8 @@
       <pubDate>Tue, 31 Oct 2017 22:42:51 -0500</pubDate>
       
       <guid>/blogs/aliquam/</guid>
-      <description>This section firstly imports the data and after using the glimpse function that provides a snapshot of the data, I transformed character values into dates.
-# Import approval polls data approval_polllist &amp;lt;- read_csv(here::here(&#39;data&#39;,&#39;approval_polllist.csv&#39;)) # or directly off fivethirtyeight website # approval_polllist &amp;lt;- read_csv(&#39;https://projects.fivethirtyeight.com/trump-approval-data/approval_polllist.csv&#39;) glimpse(approval_polllist) # Use `lubridate` to fix dates, as they are given as characters. approval_polllist_clean &amp;lt;- approval_polllist %&amp;gt;% filter(subgroup==&amp;quot;Voters&amp;quot;)%&amp;gt;% mutate(modeldate = mdy(modeldate), startdate = mdy(startdate), enddate=mdy(enddate), createddate=mdy(createddate), timestamp=parse_date_time(timestamp, orders=&amp;quot;HMSdmy&amp;quot;) ) glimpse(approval_polllist_clean) I am using ggplot to create the graphs in this part of the code.</description>
+      <description>The goal of this project was to illustrate the change of the net approval rate (approve -disapprove) of Trump since 2017. The first section firstly imports the data and after using the glimpse function that provides a snapshot of the data, I transformed character values into dates.
+# Import approval polls data approval_polllist &amp;lt;- read_csv(here::here(&#39;data&#39;,&#39;approval_polllist.csv&#39;)) # or directly off fivethirtyeight website # approval_polllist &amp;lt;- read_csv(&#39;https://projects.fivethirtyeight.com/trump-approval-data/approval_polllist.csv&#39;) glimpse(approval_polllist) # Use `lubridate` to fix dates, as they are given as characters.</description>
     </item>
     
     <item>
@@ -27,8 +27,8 @@
       <pubDate>Tue, 31 Oct 2017 22:26:13 -0500</pubDate>
       
       <guid>/blogs/tempus/</guid>
-      <description>After having imported and looked at the date, I discovered many different forms of unknowns and decided to clear the dataframe by removing those.
-#removing missing and unknown values val_to_remove=c(&amp;quot;Missing&amp;quot;, &amp;quot;Unknown&amp;quot;, &amp;quot;Other&amp;quot;, NA) death_rate_medcond &amp;lt;- covid_data %&amp;gt;% select(medcond_yn, death_yn, sex, age_group) %&amp;gt;% #removing missing and unknown values filter(!(death_yn %in% val_to_remove) , !(medcond_yn %in% val_to_remove), !(sex %in% val_to_remove), !(age_group %in% val_to_remove), ) %&amp;gt;% #assigning more meaningful names to variable medcond_yn mutate(death_bool = ifelse(death_yn==&amp;quot;Yes&amp;quot;, 1, 0), co_mor= ifelse(medcond_yn==&amp;quot;Yes&amp;quot;, &amp;quot;With comorbidities&amp;quot;, &amp;quot;Without comorbidities&amp;quot;)) %&amp;gt;% group_by(age_group, sex, co_mor) %&amp;gt;% summarise(death_r = prop(death_bool)) I am now plotting the graph using ggplot.</description>
+      <description>The goal of this project was to illustrate the Covid-19 death rates for different age groups and both genders. After having imported and looked at the date, I discovered many different forms of unknowns and decided to clear the dataframe by removing those.
+#removing missing and unknown values val_to_remove=c(&amp;quot;Missing&amp;quot;, &amp;quot;Unknown&amp;quot;, &amp;quot;Other&amp;quot;, NA) death_rate_medcond &amp;lt;- covid_data %&amp;gt;% select(medcond_yn, death_yn, sex, age_group) %&amp;gt;% #removing missing and unknown values filter(!(death_yn %in% val_to_remove) , !</description>
     </item>
     
     <item>
@@ -48,8 +48,7 @@ brexit_results &amp;lt;- vroom::vroom(here::here(&amp;quot;data&amp;quot;, &amp;
       <pubDate>Tue, 31 Oct 2017 21:28:43 -0500</pubDate>
       
       <guid>/blogs/ipsum/</guid>
-      <description>First I saved two different dataframes CA_contributor and zipcodes in new varibales and merged them via left_join as one dataframe as CA_contributors only listed the zipcodes while the other one assigned the zipcodes to the cities. But first I had to transform the zipcodes into doubles to match the format of the zipcodes in the CA_contributor.
-CA_contributors_2016 &amp;lt;- vroom::vroom(here::here(&amp;quot;data&amp;quot;,&amp;quot;CA_contributors_2016.csv&amp;quot;)) zipcodes_2016 &amp;lt;- vroom::vroom(here::here(&amp;quot;data&amp;quot;,&amp;quot;zip_code_database.csv&amp;quot;)) library(scales) library(patchwork) #changing zip codes to double and joining with CA_contributors_2016 dataset zipcodes_2016 &amp;lt;- zipcodes_2016 %&amp;gt;% mutate(zip=as.</description>
+      <description>The goal of this project was to illustarte the top 10 cities in California that donated most money to Trump and Clinton. First I saved two different dataframes CA_contributor and zipcodes in new varibales and merged them via left_join as one dataframe as CA_contributors only listed the zipcodes while the other one assigned the zipcodes to the cities. But first I had to transform the zipcodes into doubles to match the format of the zipcodes in the CA_contributor.</description>
     </item>
     
     <item>

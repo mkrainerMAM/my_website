@@ -76,7 +76,8 @@
                             
                                 <span class="image main"><img src="/img/blogs/challenge2.png" alt="" /></span>
                             
-                            <p>First I saved two different dataframes CA_contributor and zipcodes in new varibales and merged them via left_join as one dataframe as CA_contributors only listed the zipcodes while the other one assigned the zipcodes to the cities. But first I had to transform the zipcodes into doubles to match the format of the zipcodes in the CA_contributor.</p>
+                            <p>The goal of this project was to illustarte the top 10 cities in California that donated most money to Trump and Clinton.
+First I saved two different dataframes CA_contributor and zipcodes in new varibales and merged them via left_join as one dataframe as CA_contributors only listed the zipcodes while the other one assigned the zipcodes to the cities. But first I had to transform the zipcodes into doubles to match the format of the zipcodes in the CA_contributor.</p>
 <pre><code class="language-{r," data-lang="{r,">
 
 CA_contributors_2016 &lt;- vroom::vroom(here::here(&quot;data&quot;,&quot;CA_contributors_2016.csv&quot;))
@@ -135,7 +136,8 @@ p2 &lt;- ggplot(CA_Trump, aes(x=totalAmount, y=primary_city)) +
 #Using the patchwork library to display the plots side by side
 wrap_plots(p1,p2) + labs(x=&quot;Amount raised&quot;) + theme(axis.title.x = element_text(face=&quot;bold&quot;, hjust=-0.41)) + plot_annotation(&quot;Where did candidates raise most money?&quot;) 
 
-</code></pre>
+</code></pre><p>The two graphs show clearly that Clinton overall received more money from California indicating a majority of democrats. Moreover, Trump and Clinton recieved most money from Los Angeles and San Diego and San Franscisco and Los Angeles respectively, which proves that large/highly populated citites donate more money than smaller ones.</p>
+
                         </div>
                     </section>
             <!-- Disqus Inject -->

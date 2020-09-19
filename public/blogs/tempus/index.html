@@ -76,7 +76,8 @@
                             
                                 <span class="image main"><img src="/img/blogs/covid_death_rate_comorbidities.png" alt="" /></span>
                             
-                            <p>After having imported and looked at the date, I discovered many different forms of unknowns and decided to clear the dataframe by removing those.</p>
+                            <p>The goal of this project was to illustrate the Covid-19 death rates for different age groups and both genders.
+After having imported and looked at the date, I discovered many different forms of unknowns and decided to clear the dataframe by removing those.</p>
 <pre><code class="language-{r," data-lang="{r,">
 #removing missing and unknown values
 val_to_remove=c(&quot;Missing&quot;, &quot;Unknown&quot;, &quot;Other&quot;, NA)
@@ -112,7 +113,8 @@ death_rate_medcond &lt;- covid_data %&gt;%
     axis.title.y=element_blank()
   )
   
-</code></pre>
+</code></pre><p>The fist implication of this graph is a higher death rate for male tha for female people, no matter which age group. Secondly, the older the people, the higher their chance of dying. Lastly, peopel with any kind of comorbidity were more likely to die. The two last points can both be explained by weaker immune systems.</p>
+
                         </div>
                     </section>
             <!-- Disqus Inject -->

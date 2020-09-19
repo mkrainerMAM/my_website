@@ -12,8 +12,8 @@ slug: aliquam
 title: Trump 
 image: trump_approval_margin.png
 ---
-
-This section firstly imports the data and after using the glimpse function that provides a 
+The goal of this project was to illustrate the change of the net approval rate (approve -disapprove) of Trump since 2017. 
+The first section firstly imports the data and after using the glimpse function that provides a 
 snapshot of the data, I transformed character values into dates.
 
 ```{r, cache=TRUE}
@@ -88,5 +88,7 @@ ggplot(CI_plot, aes(x=end_week, y=mean_net, color=as.factor(year))) +
   scale_x_continuous(breaks= c(0,13, 26, 39, 52)) +
   scale_y_continuous(breaks=c(-20,0, -17.7,-15.0,-12.5,-10.0,-7.5,-5.0,-2.5,0.0,2.5,5.0,7.5)) +
   scale_color_manual(values=c("#FF736C", "#7DAE00", "#00BBBD", "#C47EFF"))
+```
+This graph shows that Trump was only approved by a higher percentage in the begging of his precidency. Aftwerwards the average net approval decreases to negative numbers, which implies a higher percentage of disapproving than approving. Througout the four years there were a few fluctuations based on decision made that caused more people to disapprove him. The CI-levels for each data point (shows by the top and bottom line) also indicate that the points lay within this range with a 95% confidence, which strengtehns the assumption that Trump was more disapproved than approved. 
 
  

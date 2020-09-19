@@ -47,3 +47,5 @@ ggplot(brexit_long, aes(x = percentage ,y=leave_share, color = party))+
   
 
 ```
+
+The graph finally illustrates a scatterplot. Each datapoint presents one eligible voting district. Fo the Conservative and Labour party, the graph shows no matter how high ther percentage in the 2015 general election was, the percentage of people voting to leave the EU was about 50%. This indicates that there is no strong correlatio between these two variables. At the same time the percentage in the 2015 general election and the percentage voting to leave the EU are highly correlated for the UKIP party, meaning the higher the percentage in the 2015 general election in a district, the more voted pro Brexit. Lastly, the Lib Dems line is a decreasing slope, which indicates a slight negative correlation between the percentage in the 2015 general election and the percentage voting to leave the EU. 
