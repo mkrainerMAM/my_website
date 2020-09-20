@@ -2928,6 +2928,21 @@
 
 /* Contact Method */
 
+	.contact-method {
+		margin: 0 0 2em 0;
+		padding-left: 3.25em;
+		position: relative;
+	}
+
+		.contact-method .icon {
+			left: 0;
+			position: absolute;
+			top: 0;
+		}
+
+		.contact-method h3 {
+			margin: 0 0 0.5em 0;
+		}
 
 /* Spotlights */
 
